@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -507,34 +507,59 @@ public partial class ScriptService : IScriptService
     private async Task ExecuteProject(ScriptGroupProject project)
     {
         TaskContext.Instance().CurrentScriptProject = project;
-        if (project.Type == "Javascript")
+        
+        // 保存原始的自动派遣设置
+        bool originalAutoReExploreEnabled = TaskContext.Instance().Config.AutoSkipConfig.AutoReExploreEnabled;
+        bool shouldRestoreAutoReExplore = false;
+        
+        try
         {
-            if (project.Project == null)
+            // 检查是否需要关闭自动领取委托
+            if (project.GroupInfo?.Config.PathingConfig.DisableAutoReExploreInGroup == true)
             {
-                throw new Exception("Project 为空");
+                _logger.LogInformation("→ 当前配置组需要禁止地图追踪过程任务中自动领取派遣委托");
+                TaskContext.Instance().Config.AutoSkipConfig.AutoReExploreEnabled = false;
+                shouldRestoreAutoReExplore = true;
             }
+            
+            if (project.Type == "Javascript")
+            {
+                if (project.Project == null)
+                {
+                    throw new Exception("Project 为空");
+                }
 
-            _logger.LogInformation("→ 开始执行JS脚本: {Name}", project.Name);
-            if (RunnerContext.Instance.IsPreExecution) _logger.LogInformation("此任务为优先执行任务！");
-            await project.Run();
+                _logger.LogInformation("→ 开始执行JS脚本: {Name}", project.Name);
+                if (RunnerContext.Instance.IsPreExecution) _logger.LogInformation("此任务为优先执行任务！");
+                await project.Run();
+            }
+            else if (project.Type == "KeyMouse")
+            {
+                _logger.LogInformation("→ 开始执行键鼠脚本: {Name}", project.Name);
+                if (RunnerContext.Instance.IsPreExecution) _logger.LogInformation("此任务为优先执行任务！");
+                await project.Run();
+            }
+            else if (project.Type == "Pathing")
+            {
+                _logger.LogInformation("→ 开始执行地图追踪任务: {Name}", project.Name);
+                if (RunnerContext.Instance.IsPreExecution) _logger.LogInformation("此任务为优先执行任务！");
+                await project.Run();
+            }
+            else if (project.Type == "Shell")
+            {
+                _logger.LogInformation("→ 开始执行shell: {Name}", project.Name);
+                if (RunnerContext.Instance.IsPreExecution) _logger.LogInformation("此任务为优先执行任务！");
+                await project.Run();
+            }
         }
-        else if (project.Type == "KeyMouse")
+        finally
         {
-            _logger.LogInformation("→ 开始执行键鼠脚本: {Name}", project.Name);
-            if (RunnerContext.Instance.IsPreExecution) _logger.LogInformation("此任务为优先执行任务！");
-            await project.Run();
-        }
-        else if (project.Type == "Pathing")
-        {
-            _logger.LogInformation("→ 开始执行地图追踪任务: {Name}", project.Name);
-            if (RunnerContext.Instance.IsPreExecution) _logger.LogInformation("此任务为优先执行任务！");
-            await project.Run();
-        }
-        else if (project.Type == "Shell")
-        {
-            _logger.LogInformation("→ 开始执行shell: {Name}", project.Name);
-            if (RunnerContext.Instance.IsPreExecution) _logger.LogInformation("此任务为优先执行任务！");
-            await project.Run();
+            // 恢复原始的自动派遣设置
+            if (shouldRestoreAutoReExplore)
+            {
+                _logger.LogInformation("→ 恢复原始自动领取派遣设置");
+                TaskContext.Instance().Config.AutoSkipConfig.AutoReExploreEnabled = originalAutoReExploreEnabled;
+            }
         }
     }
 
