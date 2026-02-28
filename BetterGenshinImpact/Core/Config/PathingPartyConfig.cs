@@ -125,13 +125,6 @@ public partial class PathingPartyConfig : ObservableObject
 
     [ObservableProperty]
     private AutoFightConfig _autoFightConfig = new();
-
-    /// <summary>
-    /// 禁止地图追踪过程任务中自动领取派遣委托
-    /// </summary>
-    [ObservableProperty]
-    private bool _disableAutoReExploreInGroup = false;
-
     public static PathingPartyConfig BuildDefault()
     {
         // 即便是不启用的情况下也设置默认值，减少后续使用的判断
