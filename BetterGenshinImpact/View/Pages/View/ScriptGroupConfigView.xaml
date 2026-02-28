@@ -367,31 +367,7 @@
                                          IsChecked="{Binding PathingConfig.HideOnRepeat, Mode=TwoWay}" />
 
                     </Grid>
-                    <Grid Margin="16">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <ui:TextBlock Grid.Row="0"
-                                      Grid.Column="0"
-                                      FontTypography="Body"
-                                      Text="禁止地图追踪过程任务中自动领取委托"
-                                      TextWrapping="Wrap" />
-                        <ui:TextBlock Grid.Row="1"
-                                      Grid.Column="0"
-                                      Foreground="{ui:ThemeResource TextFillColorTertiaryBrush}"
-                                      Text="选中后，地图追踪过程中任务运行时将关闭自动领取派遣委托，运行结束后恢复原设置"
-                                      TextWrapping="Wrap" />
-                        <ui:ToggleSwitch Grid.Row="0"
-                                         Grid.RowSpan="2"
-                                         Grid.Column="1"
-                                         IsChecked="{Binding PathingConfig.DisableAutoReExploreInGroup, Mode=TwoWay}" />
-
-                    </Grid>                                      <!-- 执行周期配置 -->
+                                       <!-- 执行周期配置 -->
                     <Grid Margin="16">
 
                         <ui:CardExpander Margin="0,0,36,12"
