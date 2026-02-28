@@ -29,7 +29,10 @@ public class AutoPathingScript
             {
                 pathExecutor.PartyConfig = patyConfig;
             }
-
+            if (task.Config != null)
+            {
+                pathExecutor.DisableAutoFetchDispatch = task.Config.DisableAutoFetchDispatch;
+            }
             await pathExecutor.Pathing(task);
         }
         catch (Exception e)
