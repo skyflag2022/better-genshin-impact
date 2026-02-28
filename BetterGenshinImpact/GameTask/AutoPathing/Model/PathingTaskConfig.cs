@@ -18,4 +18,8 @@ public class PathingTaskConfig
     {
         { "AutoPick", true },        // 自动拾取
     };
+    /// <summary>
+    /// 是否禁用大地图传送时自动领取派遣奖励
+    /// </summary>
+    public bool DisableAutoFetchDispatch { get; set; } = false;
 }
