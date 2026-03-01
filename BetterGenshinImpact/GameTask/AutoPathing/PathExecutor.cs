@@ -101,9 +101,6 @@ public class PathExecutor
     // 最近一次获取派遣奖励的时间
     private DateTime _lastGetExpeditionRewardsTime = DateTime.MinValue;
 
-    /// 是否禁用自动领取派遣奖励
-    /// </summary>
-    public bool DisableAutoFetchDispatch { get; set; } = false;
 
     //当到达恢复点位
     public void TryCloseSkipOtherOperations()
@@ -644,13 +641,7 @@ public class PathExecutor
         {
             tpTask = new TpTask(ct);
         }
-
-        // 如果禁用自动领取派遣，直接返回
-        if (DisableAutoFetchDispatch)
-        {
-            return false;
-        }
-
+        
         // 最小5分钟间隔
         if ( _combatScenes?.CurrentMultiGameStatus?.IsInMultiGame == true || (DateTime.UtcNow - _lastGetExpeditionRewardsTime).TotalMinutes < 5)
         {
