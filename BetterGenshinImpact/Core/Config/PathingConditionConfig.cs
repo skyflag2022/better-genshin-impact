@@ -37,6 +37,10 @@ public partial class PathingConditionConfig : ObservableObject
     // 启用自动吃药功能
     [ObservableProperty]
     private bool _autoEatEnabled = false;
+    
+    // 关闭地图追踪过程中的自动领取派遣委托
+    [ObservableProperty]
+    private bool _disableAutoFetchDispatch = true;  // 默认关闭
 
     public static PathingConditionConfig Default => new()
     {

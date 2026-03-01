@@ -641,7 +641,13 @@ public class PathExecutor
         {
             tpTask = new TpTask(ct);
         }
-        
+
+        // 检查配置：是否禁用自动领取派遣
+        if (TaskContext.Instance().Config.PathingConditionConfig.DisableAutoFetchDispatch)
+        {
+            return false;
+        }
+
         // 最小5分钟间隔
         if ( _combatScenes?.CurrentMultiGameStatus?.IsInMultiGame == true || (DateTime.UtcNow - _lastGetExpeditionRewardsTime).TotalMinutes < 5)
         {
